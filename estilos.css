@@ -78,9 +78,9 @@ body{
   .fw-semibold { font-weight: 600; }
   .lh-tight { line-height: 1.25; }
 
-  ol { counter-reset: item }
-  ol li{ display: block }
-  ol li:before { content: counters(item, ".") " "; counter-increment: item }
+li{
+  list-style: none;
+}
 
 .contenido select{
     border: none;

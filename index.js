@@ -49,13 +49,12 @@ $('.sortable').nestedSortable({
         $('#principal')[0].innerHTML = htmlprincipal + 
         '<li>'+
             '<div class="contenido d-flex align-items-center">'+
-                '<h6 class="col-6 mx-3">Enlace</h6>'+
+                '<h6 class="mx-3">Enlace</h6>'+
                 '<select class="">'+
                     '<option>Enlace personalizado</option>'+
                 '</select>'+
             '</div>'+
         '</li>';
-        console.log($('#principal')[0]);
     }
 
     function selectMenus() {
@@ -75,14 +74,113 @@ $('.sortable').nestedSortable({
     function eligeMenu(e){
         let selec = $("option:selected")[0];
         $("#nomMenu")[0].value = selec.innerText;
-        console.log(e.value);
+        console.log(selec);
+        selectHijosMenus(selec.value)
+        console.log(selec.value);
+
     }
 
-    function obtenerNumerosMenu(){
-        let num = $("ol li");
-        for(e of num){
-            console.log(e);
-        }
-        console.log(num);
+    function selectHijosMenus(id){
+        $.ajax({
+            data: {id: id},
+            type: "POST",
+            url: "http://localhost:82/Menus/selectHijosMenu.php",
+            success: function (res) {
+                let menus = JSON.parse(res);
+                console.log(menus);
+                let principal = document.getElementById('principal');
+                principal.innerHTML = "";
+                let lista = document.createElement("li");
+                let div = document.createElement("div");
+                div.innerText = menus[0].Menu;
+                div.classList.add("contenido");
+                div.classList.add("ui-sortable-handle");
+                lista.appendChild(div);
+                principal.appendChild(lista)
+                let listaordenada; 
+                let nodoPadre = lista;
+                let nivelActual = 0;
+                console.log(nodoPadre);
+                for(let i = 1; i < menus.length; i++){
+                    if(menus[i].Nivel > nivelActual){
+                        listaordenada = document.createElement("ol");
+                        lista = document.createElement("li");
+                        div = document.createElement("div");
+                        div.innerText = menus[i].Menu; 
+                        div.classList.add("contenido");
+                        div.classList.add("ui-sortable-handle");
+                        lista.appendChild(div);
+                        listaordenada.appendChild(lista);
+                        nodoPadre.appendChild(listaordenada);
+                        nodoPadre = lista;
+                    }else if(menus[i].Nivel < nivelActual){
+                        for(let j = nivelActual; j > menus[i].Nivel; j--){
+                            nodoPadre = nodoPadre.parentNode.parentNode;
+                        }
+                        lista = document.createElement("li");
+                        div = document.createElement("div");
+                        div.innerText = menus[i].Menu;
+                        div.classList.add("contenido");
+                        div.classList.add("ui-sortable-handle");
+                        lista.appendChild(div);
+                        nodoPadre.appendChild(lista);
+                    }else{
+                        lista = document.createElement("li");
+                        div = document.createElement("div");
+                        div.innerText = menus[i].Menu;
+                        div.classList.add("contenido");
+                        div.classList.add("ui-sortable-handle");
+                        lista.appendChild(div);
+                        nodoPadre.appendChild(lista);
+                    }
+                    nivelActual = menus[i].Nivel;
+                }
+            },
+        });
     }
-    obtenerNumerosMenu();
+
+    var root = document.getElementById('principal');
+    var nivel = 0;
+		 // obtener la etiqueta raíz html
+ 
+		function forDom(root, nivel){
+			/* showNode(root); */
+			 // La salida aquí es el nodo raíz
+			var children = root.children;
+			 // Obtener los dos nodos secundarios cabeza y cuerpo del nodo raíz
+			forChildren(children,nivel);
+			 // Encuentra recursivamente todos los nodos debajo de estos dos hijos
+		}
+		 // Obtenga el pseudo-array del nodo hijo y entréguelo a lo siguiente
+ 
+		function forChildren(children,nivel){
+            for(var i=0; i<children.length; i++){
+            	var child = children[i];
+
+                showNode(child,nivel); 
+                                // nombre del nodo secundario de salida
+ 
+                child.children && forDom(child,nivel+1);
+                                 // determina si el nodo secundario tiene nodos secundarios, si hay una operación para continuar atravesando el nodo, esta también es una condición de aborto recursivo
+                                 // aquí se usa la recursión
+            }
+		}
+		 // Iterar a través de la pseudo matriz compuesta por los nodos obtenidos anteriormente, y juzgar si hay nodos hijos uno por uno. Si hay alguno, ejecute la función anterior para formar recursividad
+        let dicc = [];
+		function showNode(node,nivel){
+            let nivelNodo;
+            if(node.tagName==="LI" || node.tagName==="OL"){
+                if(node.tagName!="OL"){
+                    nivelNodo = nivel
+                    if(nivelNodo>0){
+                        nivelNodo = nivelNodo/2;
+                        dicc.push({'elemento': node, 'nivel':nivelNodo});
+                    }else{
+                        dicc.push({'elemento': node, 'nivel':nivel});
+                    }
+                    console.log (node,nivelNodo);           
+                }           
+            } 
+		}
+		forDom(root,nivel);
+		 // Atraviesa el árbol dom desde el nodo raíz
