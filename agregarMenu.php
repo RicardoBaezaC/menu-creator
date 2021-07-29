@@ -3,10 +3,10 @@
 
     $datos = array(
         'nomMenu' => $_POST['nomMenu'],
-        'Usuario' => $_POST['Usuario'],
         'Fecha' => $_POST['Fecha']
     );
 
+    if($datos['nomMenu']!=""){
         $insert = "INSERT INTO app_menu (";
         $values = " VALUES (";
      
@@ -25,6 +25,7 @@
         }else{
             echo "jaló";
         }
-        
+    }      
+
     $conn->close();
 ?>

@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="estilos.css" />
 </head>
 
-<body>
+<body style="height: 100vh;">
   <div class="h-100">
     <nav class="h-100">
       <ul class="nav nav-tabs" id="myTab" role="tablist" style="height: 40px">
@@ -26,12 +26,6 @@
           <button class="nav-link active" id="editar-menu-tab" data-bs-toggle="tab" data-bs-target="#editar-menu"
             type="button" role="tab" aria-controls="editar-menu" aria-selected="true">
             Editar Menú
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="ubicaciones-tab" data-bs-toggle="tab" data-bs-target="#ubicaciones" type="button"
-            role="tab" aria-controls="ubicaciones" aria-selected="false">
-            Gestionar ubicaciones
           </button>
         </li>
       </ul>
@@ -61,9 +55,9 @@
               </ul>
             </div>
           </nav>
-          <div class="d-flex align-items-center" style="height: calc(100% - 65px);">
-            <aside class="d-flex align-items-start h-100">
-              <div class="flex-shrink-0 p-3 bg-white" style="width: 100%">
+          <div class="d-flex align-items-start" style="height: calc(100% - 65px); width: 100%;">
+            <aside class="d-flex align-items-start" style="height: 100%; width: 315px">
+              <div class="p-3 bg-white" style="width: 315px">
                 <h6 class="pb-3">Agregar articulos al menú</h6>
                 <ul class="list-unstyled ps-0">
                   <li class="mb-1">
@@ -74,12 +68,8 @@
                       <div class="d-flex flex-column">
                         <br>
                         <div class="d-flex justify-content-around">
-                          <label class="col-4">Nombre:</label><input id="nombreMenu" class="col-8" type="text" />
-                        </div>
-                        <br>
-                        <div class="d-flex justify-content-between">
-                          <label class="col-4">Usuario: </label><input id="usuarioMenu" class="col-8" type="text" />
-                        </div>  
+                          <label class="col-4">Nombre:</label><input id="nombreMenu" onkeyup="keyp(event)" class="col-8" type="text" />
+                        </div> 
                         <br>
                         <div class="d-flex justify-content-end">
                           <button class="btn btn-primary" onclick="agregarMenu()">Añadir al menú</button>
@@ -95,11 +85,11 @@
                       <div class="d-flex flex-column">
                         <br>
                         <div class="d-flex justify-content-around">
-                          <label class="col-4">URL:</label><input id="url" class="col-8" type="text" />
+                          <label class="col-4">URL:</label><input id="url" onkeyup="keyp2(event)" class="col-8" type="text" />
                         </div>
                         <br>
                         <div class="d-flex justify-content-between">
-                          <label class="col-4">Texto del enlace: </label><input id="textourl" class="" type="text" />
+                          <label class="col-4">Texto del enlace: </label><input id="textourl" onkeyup="keyp3(event)" class="" type="text" />
                         </div>  
                         <br>
                         <div class="d-flex justify-content-end">
@@ -111,18 +101,18 @@
                 </ul>
               </div>
             </aside>
-            <div class="d-flex align-items-start h-100 border border-1" style="width: calc(100% - 300px);">
+            <div class="d-flex align-items-start h-100 border border-1" style="width: calc(100% - 315px);">
               <div class="flex-shrink-0 p-3 bg-white w-100 h-100">
                 <h6 class="pb-3">Estructura del menú</h6>
                   <div class="d-flex flex-column border border-1 h- w-100">
                     <div class="d-flex align-items-center justify-content-around pt-3 pb-3" style="background-color: lightgrey;">
-                      <label class="text-center">Nombre del menú</label><input class="" id="nomMenu" class=""/>
+                      <label class="text-center">Nombre del menú</label><input class="" id="nomMenu" class="" readonly/>
                       <button class="btn btn-primary" onclick="guardarMenu()">Guardar</button>
                     </div>
                     <div>
                       <p class="text-center" >Coloca los elementos en el orden que prefieras</p>
                       <ol id="principal" class="sortable">
-                      
+                        
                       </ol>     
                     </div>
                   </div>
@@ -130,17 +120,9 @@
             </div>
           </div>
         </div>
-        <div class="tab-pane fade" id="ubicaciones" role="tabpanel" aria-labelledby="ubicaciones-tab"></div>
       </div>
     </nav>
   </div>
-  <form id="formMenu" method="POST" hidden>
-    <input name="idM" id="idM" hidden/>
-    <input name="Menu" id="Menu" hidden/>
-    <input name="Enlace" id="Enlace" hidden/>
-    <input name="Icono" id="Icono" hidden/>
-    <input name="Nivel" id="Nivel" hidden/>
-  </form>
   <script src="index.js"></script>
 </body>
 
